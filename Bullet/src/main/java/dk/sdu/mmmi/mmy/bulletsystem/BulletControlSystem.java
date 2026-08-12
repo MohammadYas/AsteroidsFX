@@ -11,7 +11,7 @@ import java.util.List;
 
 public class BulletControlSystem implements BulletSPI, IEntityProcessingService {
 
-    private static final double BULLET_SPEED = 6;
+    private static final double BULLET_SPEED = 11;
 
     @Override
     public Entity createBullet(Entity shooter, GameData gameData) {

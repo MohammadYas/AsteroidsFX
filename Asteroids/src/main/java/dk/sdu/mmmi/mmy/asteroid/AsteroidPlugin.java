@@ -25,7 +25,7 @@ public class AsteroidPlugin implements IGamePluginService {
         asteroid.setPolygonCoordinates(-14, -8, -6, -14, 6, -12, 14, -4, 12, 8, 2, 14, -8, 12, -14, 4);
         asteroid.setRadius(14);
         asteroid.setHitPoints(1);
-        asteroid.setSpeed(0.5 + random.nextDouble());
+        asteroid.setSpeed(1.2 + random.nextDouble() * 1.5);
         asteroid.setRotation(random.nextInt(360));
 
         if (random.nextBoolean()) {

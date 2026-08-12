@@ -21,6 +21,7 @@ public class EnemyPlugin implements IGamePluginService {
             enemy.setY(random.nextInt(gameData.getDisplayHeight()));
             enemy.setRotation(random.nextInt(360));
             enemy.setRadius(8);
+            enemy.setSpeed(2.2);
             enemy.setHitPoints(2);
             world.addEntity(enemy);
         }

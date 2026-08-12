@@ -11,7 +11,7 @@ import java.util.ServiceLoader;
 public class EnemyControlSystem implements IEntityProcessingService {
 
     private static final double TURN_CHANCE = 0.02;
-    private static final double SHOOT_CHANCE = 0.01;
+    private static final double SHOOT_CHANCE = 0.02;
 
     private final Random random = new Random();
 

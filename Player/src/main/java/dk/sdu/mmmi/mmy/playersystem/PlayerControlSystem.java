@@ -10,17 +10,29 @@ import java.util.ServiceLoader;
 
 public class PlayerControlSystem implements IEntityProcessingService {
 
-    private static final double TURN_SPEED = 2.5;
-    private static final double THRUST = 0.1;
-    private static final double FRICTION = 0.96;
-    private static final double MAX_SPEED = 2.5;
-    private static final int SHOT_DELAY = 15;
+    private static final double TURN_SPEED = 4.5;
+    private static final double THRUST = 0.25;
+    private static final double REVERSE_THRUST = 0.15;
+    private static final double FRICTION = 0.98;
+    private static final double MAX_SPEED = 6;
+    private static final int SHOT_DELAY = 10;
+    private static final int RESPAWN_DELAY = 90;
 
     private int framesSinceLastShot = SHOT_DELAY;
+    private int framesSinceDeath = 0;
 
     @Override
     public void process(GameData gameData, World world) {
         framesSinceLastShot++;
+
+        if (world.getEntities(Player.class).isEmpty()) {
+            framesSinceDeath++;
+            if (framesSinceDeath >= RESPAWN_DELAY) {
+                framesSinceDeath = 0;
+                world.addEntity(PlayerPlugin.createPlayer(gameData));
+            }
+            return;
+        }
 
         for (Player player : world.getEntities(Player.class)) {
             if (gameData.getKeys().isDown(GameKeys.LEFT)) {
@@ -33,6 +45,11 @@ public class PlayerControlSystem implements IEntityProcessingService {
                 double radians = Math.toRadians(player.getRotation());
                 player.setDx(player.getDx() + Math.cos(radians) * THRUST);
                 player.setDy(player.getDy() + Math.sin(radians) * THRUST);
+            }
+            if (gameData.getKeys().isDown(GameKeys.DOWN)) {
+                double radians = Math.toRadians(player.getRotation());
+                player.setDx(player.getDx() - Math.cos(radians) * REVERSE_THRUST);
+                player.setDy(player.getDy() - Math.sin(radians) * REVERSE_THRUST);
             }
             if (gameData.getKeys().isDown(GameKeys.SPACE) && framesSinceLastShot >= SHOT_DELAY) {
                 shoot(player, gameData, world);

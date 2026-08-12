@@ -37,7 +37,7 @@ public class AsteroidSplitterImpl implements IAsteroidSplitter {
         fragment.setX(parent.getX());
         fragment.setY(parent.getY());
         fragment.setRotation(parent.getRotation() + rotationOffset);
-        fragment.setSpeed(1.5);
+        fragment.setSpeed(3);
         fragment.setHitPoints(1);
         return fragment;
     }

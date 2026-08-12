@@ -91,6 +91,9 @@ public class Game {
         if (code == KeyCode.UP) {
             gameData.getKeys().setKey(GameKeys.UP, pressed);
         }
+        if (code == KeyCode.DOWN) {
+            gameData.getKeys().setKey(GameKeys.DOWN, pressed);
+        }
         if (code == KeyCode.SPACE) {
             gameData.getKeys().setKey(GameKeys.SPACE, pressed);
         }
