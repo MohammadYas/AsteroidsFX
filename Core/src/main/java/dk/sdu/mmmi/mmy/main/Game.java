@@ -30,6 +30,7 @@ public class Game {
     private final Text status = new Text(10, 20, "");
 
     private static final int SCORE_REFRESH_DELAY = 60;
+    private static final long UPDATE_INTERVAL = 1_000_000_000L / 60;
 
     private final List<IGamePluginService> gamePluginServices;
     private final List<IEntityProcessingService> entityProcessingServices;
@@ -97,9 +98,14 @@ public class Game {
 
     public void render() {
         new AnimationTimer() {
+            private long nextUpdate = 0;
+
             @Override
             public void handle(long now) {
-                update();
+                if (now >= nextUpdate) {
+                    update();
+                    nextUpdate = now + UPDATE_INTERVAL;
+                }
                 draw();
             }
         }.start();
