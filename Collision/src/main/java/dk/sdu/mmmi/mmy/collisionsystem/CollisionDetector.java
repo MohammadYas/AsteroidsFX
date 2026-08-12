@@ -42,7 +42,8 @@ public class CollisionDetector implements IPostEntityProcessingService {
             return;
         }
 
-        Optional<IAsteroidSplitter> splitter = ServiceLoader.load(IAsteroidSplitter.class).findFirst();
+        ModuleLayer layer = getClass().getModule().getLayer();
+        Optional<IAsteroidSplitter> splitter = ServiceLoader.load(layer, IAsteroidSplitter.class).findFirst();
         if (entity instanceof Asteroid && splitter.isPresent()) {
             splitter.get().createSplitAsteroid(entity, world);
         } else {

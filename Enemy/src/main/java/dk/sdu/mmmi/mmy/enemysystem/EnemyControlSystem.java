@@ -40,7 +40,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
             }
 
             if (random.nextDouble() < SHOOT_CHANCE) {
-                ServiceLoader.load(BulletSPI.class).findFirst()
+                ServiceLoader.load(getClass().getModule().getLayer(), BulletSPI.class).findFirst()
                         .ifPresent(spi -> world.addEntity(spi.createBullet(enemy, gameData)));
             }
         }

@@ -70,7 +70,8 @@ public class PlayerControlSystem implements IEntityProcessingService {
     }
 
     private void shoot(Player player, GameData gameData, World world) {
-        ServiceLoader.load(BulletSPI.class).findFirst().ifPresent(spi -> {
+        ModuleLayer layer = getClass().getModule().getLayer();
+        ServiceLoader.load(layer, BulletSPI.class).findFirst().ifPresent(spi -> {
             world.addEntity(spi.createBullet(player, gameData));
             framesSinceLastShot = 0;
         });
