@@ -5,6 +5,7 @@ module Collision {
     requires CommonAsteroids;
 
     uses dk.sdu.mmmi.mmy.common.asteroids.IAsteroidSplitter;
+    uses dk.sdu.mmmi.mmy.common.services.IScoreService;
 
     provides IPostEntityProcessingService with dk.sdu.mmmi.mmy.collisionsystem.CollisionDetector;
 

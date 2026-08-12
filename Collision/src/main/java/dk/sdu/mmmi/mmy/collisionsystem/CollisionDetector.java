@@ -6,12 +6,15 @@ import dk.sdu.mmmi.mmy.common.data.Entity;
 import dk.sdu.mmmi.mmy.common.data.GameData;
 import dk.sdu.mmmi.mmy.common.data.World;
 import dk.sdu.mmmi.mmy.common.services.IPostEntityProcessingService;
+import dk.sdu.mmmi.mmy.common.services.IScoreService;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.ServiceLoader;
 
 public class CollisionDetector implements IPostEntityProcessingService {
+
+    private static final int POINTS_PER_ASTEROID = 10;
 
     @Override
     public void process(GameData gameData, World world) {
@@ -48,6 +51,17 @@ public class CollisionDetector implements IPostEntityProcessingService {
             splitter.get().createSplitAsteroid(entity, world);
         } else {
             world.removeEntity(entity);
+        }
+
+        if (entity instanceof Asteroid) {
+            awardPoints(layer);
+        }
+    }
+
+    private void awardPoints(ModuleLayer layer) {
+        Optional<IScoreService> scoreService = ServiceLoader.load(layer, IScoreService.class).findFirst();
+        if (scoreService.isPresent()) {
+            scoreService.get().addPoints(POINTS_PER_ASTEROID);
         }
     }
 }

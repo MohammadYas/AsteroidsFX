@@ -6,7 +6,7 @@ mvn clean install
 rm -rf plugins
 mkdir -p plugins
 
-for module in Common CommonBullet CommonAsteroids Player Enemy Asteroids Bullet Collision; do
+for module in Common CommonBullet CommonAsteroids Player Enemy Asteroids Bullet Collision Score; do
     cp "$module"/target/"$module"-*.jar plugins/
 done
 

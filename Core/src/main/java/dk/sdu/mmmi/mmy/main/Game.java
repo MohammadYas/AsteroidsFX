@@ -7,6 +7,7 @@ import dk.sdu.mmmi.mmy.common.data.World;
 import dk.sdu.mmmi.mmy.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.mmy.common.services.IGamePluginService;
 import dk.sdu.mmmi.mmy.common.services.IPostEntityProcessingService;
+import dk.sdu.mmmi.mmy.common.services.IScoreService;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -28,16 +29,23 @@ public class Game {
     private final Pane gameWindow = new Pane();
     private final Text status = new Text(10, 20, "");
 
+    private static final int SCORE_REFRESH_DELAY = 60;
+
     private final List<IGamePluginService> gamePluginServices;
     private final List<IEntityProcessingService> entityProcessingServices;
     private final List<IPostEntityProcessingService> postEntityProcessingServices;
+    private final List<IScoreService> scoreServices;
+
+    private int framesSinceScoreRefresh = 0;
 
     public Game(List<IGamePluginService> gamePluginServices,
                 List<IEntityProcessingService> entityProcessingServices,
-                List<IPostEntityProcessingService> postEntityProcessingServices) {
+                List<IPostEntityProcessingService> postEntityProcessingServices,
+                List<IScoreService> scoreServices) {
         this.gamePluginServices = gamePluginServices;
         this.entityProcessingServices = entityProcessingServices;
         this.postEntityProcessingServices = postEntityProcessingServices;
+        this.scoreServices = scoreServices;
     }
 
     public void start(Stage window) {
@@ -45,9 +53,7 @@ public class Game {
         gameWindow.setStyle("-fx-background-color: black;");
 
         status.setFill(Color.LIGHTGRAY);
-        status.setText("Loaded components: " + gamePluginServices.size() + " plugins, "
-                + entityProcessingServices.size() + " processors, "
-                + postEntityProcessingServices.size() + " post-processors");
+        status.setText(statusText());
         gameWindow.getChildren().add(status);
 
         Scene scene = new Scene(gameWindow);
@@ -61,6 +67,17 @@ public class Game {
         window.setScene(scene);
         window.setTitle("ASTEROIDS");
         window.show();
+    }
+
+    private String statusText() {
+        String text = "Loaded components: " + gamePluginServices.size() + " plugins, "
+                + entityProcessingServices.size() + " processors, "
+                + postEntityProcessingServices.size() + " post-processors";
+
+        if (!scoreServices.isEmpty()) {
+            text = text + " - score: " + scoreServices.get(0).getScore();
+        }
+        return text;
     }
 
     private void setKey(KeyCode code, boolean pressed) {
@@ -94,6 +111,12 @@ public class Game {
         }
         for (IPostEntityProcessingService processor : postEntityProcessingServices) {
             processor.process(gameData, world);
+        }
+
+        framesSinceScoreRefresh++;
+        if (framesSinceScoreRefresh >= SCORE_REFRESH_DELAY) {
+            framesSinceScoreRefresh = 0;
+            status.setText(statusText());
         }
     }
 
