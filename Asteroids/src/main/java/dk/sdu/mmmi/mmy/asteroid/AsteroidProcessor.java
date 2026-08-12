@@ -1,5 +1,6 @@
 package dk.sdu.mmmi.mmy.asteroid;
 
+import dk.sdu.mmmi.mmy.common.asteroids.Asteroid;
 import dk.sdu.mmmi.mmy.common.data.GameData;
 import dk.sdu.mmmi.mmy.common.data.World;
 import dk.sdu.mmmi.mmy.common.services.IEntityProcessingService;

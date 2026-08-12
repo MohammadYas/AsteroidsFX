@@ -1,11 +1,15 @@
 package dk.sdu.mmmi.mmy.collisionsystem;
 
+import dk.sdu.mmmi.mmy.common.asteroids.Asteroid;
+import dk.sdu.mmmi.mmy.common.asteroids.IAsteroidSplitter;
 import dk.sdu.mmmi.mmy.common.data.Entity;
 import dk.sdu.mmmi.mmy.common.data.GameData;
 import dk.sdu.mmmi.mmy.common.data.World;
 import dk.sdu.mmmi.mmy.common.services.IPostEntityProcessingService;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.ServiceLoader;
 
 public class CollisionDetector implements IPostEntityProcessingService {
 
@@ -34,7 +38,14 @@ public class CollisionDetector implements IPostEntityProcessingService {
     }
 
     private void handleHit(Entity entity, World world) {
-        if (entity.takeDamage()) {
+        if (!entity.takeDamage()) {
+            return;
+        }
+
+        Optional<IAsteroidSplitter> splitter = ServiceLoader.load(IAsteroidSplitter.class).findFirst();
+        if (entity instanceof Asteroid && splitter.isPresent()) {
+            splitter.get().createSplitAsteroid(entity, world);
+        } else {
             world.removeEntity(entity);
         }
     }

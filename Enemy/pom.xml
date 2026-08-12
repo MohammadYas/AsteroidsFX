@@ -8,9 +8,9 @@
         <artifactId>asteroids.jpms</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>Asteroids</artifactId>
+    <artifactId>Enemy</artifactId>
     <packaging>jar</packaging>
-    <name>Asteroids</name>
+    <name>Enemy</name>
     <dependencies>
         <dependency>
             <groupId>dk.sdu.mmmi.mmy</groupId>
@@ -19,7 +19,7 @@
         </dependency>
         <dependency>
             <groupId>dk.sdu.mmmi.mmy</groupId>
-            <artifactId>CommonAsteroids</artifactId>
+            <artifactId>CommonBullet</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
