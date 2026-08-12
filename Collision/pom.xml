@@ -22,5 +22,26 @@
             <artifactId>CommonAsteroids</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>dk.sdu.mmmi.mmy</groupId>
+            <artifactId>Asteroids</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+        </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>--add-reads Collision=Asteroids</argLine>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
