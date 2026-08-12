@@ -6,6 +6,7 @@ import dk.sdu.mmmi.mmy.common.services.IPostEntityProcessingService;
 import dk.sdu.mmmi.mmy.common.util.ServiceLocator;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Main extends Application {
 
@@ -15,14 +16,28 @@ public class Main extends Application {
 
     @Override
     public void start(Stage window) {
-        ServiceLocator locator = ServiceLocator.INSTANCE;
+        Game game = useSpring() ? gameFromSpring() : gameFromServiceLoader();
+        game.start(window);
+        game.render();
+    }
 
-        Game game = new Game(
+    private boolean useSpring() {
+        return "spring".equalsIgnoreCase(System.getProperty("bootstrap"));
+    }
+
+    private Game gameFromServiceLoader() {
+        System.out.println("Assembling with ServiceLoader");
+        ServiceLocator locator = ServiceLocator.INSTANCE;
+        return new Game(
                 locator.locateAll(IGamePluginService.class),
                 locator.locateAll(IEntityProcessingService.class),
                 locator.locateAll(IPostEntityProcessingService.class));
+    }
 
-        game.start(window);
-        game.render();
+    private Game gameFromSpring() {
+        System.out.println("Assembling with the Spring container");
+        AnnotationConfigApplicationContext context =
+                new AnnotationConfigApplicationContext(ModuleConfig.class);
+        return context.getBean(Game.class);
     }
 }

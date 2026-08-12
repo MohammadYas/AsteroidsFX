@@ -12,6 +12,10 @@
     <packaging>jar</packaging>
     <name>Core</name>
 
+    <properties>
+        <bootstrap>serviceloader</bootstrap>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>dk.sdu.mmmi.mmy</groupId>
@@ -26,6 +30,18 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -37,6 +53,9 @@
                 <configuration>
                     <mainClass>Core/dk.sdu.mmmi.mmy.main.Main</mainClass>
                     <workingDirectory>${project.basedir}/..</workingDirectory>
+                    <options>
+                        <option>-Dbootstrap=${bootstrap}</option>
+                    </options>
                 </configuration>
             </plugin>
         </plugins>
