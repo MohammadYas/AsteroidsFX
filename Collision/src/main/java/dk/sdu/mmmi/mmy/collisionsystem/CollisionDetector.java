@@ -1,0 +1,41 @@
+package dk.sdu.mmmi.mmy.collisionsystem;
+
+import dk.sdu.mmmi.mmy.common.data.Entity;
+import dk.sdu.mmmi.mmy.common.data.GameData;
+import dk.sdu.mmmi.mmy.common.data.World;
+import dk.sdu.mmmi.mmy.common.services.IPostEntityProcessingService;
+
+import java.util.List;
+
+public class CollisionDetector implements IPostEntityProcessingService {
+
+    @Override
+    public void process(GameData gameData, World world) {
+        List<Entity> entities = List.copyOf(world.getEntities());
+
+        for (int i = 0; i < entities.size(); i++) {
+            for (int j = i + 1; j < entities.size(); j++) {
+                Entity first = entities.get(i);
+                Entity second = entities.get(j);
+
+                if (collides(first, second)) {
+                    handleHit(first, world);
+                    handleHit(second, world);
+                }
+            }
+        }
+    }
+
+    public boolean collides(Entity first, Entity second) {
+        double dx = first.getX() - second.getX();
+        double dy = first.getY() - second.getY();
+        double distance = Math.sqrt(dx * dx + dy * dy);
+        return distance < first.getRadius() + second.getRadius();
+    }
+
+    private void handleHit(Entity entity, World world) {
+        if (entity.takeDamage()) {
+            world.removeEntity(entity);
+        }
+    }
+}

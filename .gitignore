@@ -1,0 +1,7 @@
+target/
+plugins/
+.idea/
+*.iml
+.vscode/
+nbproject/
+.DS_Store
