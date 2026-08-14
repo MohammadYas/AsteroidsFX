@@ -13,10 +13,21 @@ public class EnemyControlSystem implements IEntityProcessingService {
     private static final double TURN_CHANCE = 0.02;
     private static final double SHOOT_CHANCE = 0.02;
 
+    private static final int MINIMUM_ENEMIES = 3;
+    private static final int SPAWN_DELAY = 180;
+
     private final Random random = new Random();
+
+    private int framesSinceSpawn = 0;
 
     @Override
     public void process(GameData gameData, World world) {
+        framesSinceSpawn++;
+        if (world.getEntities(Enemy.class).size() < MINIMUM_ENEMIES && framesSinceSpawn >= SPAWN_DELAY) {
+            framesSinceSpawn = 0;
+            world.addEntity(EnemyPlugin.createEnemy(gameData));
+        }
+
         for (Enemy enemy : world.getEntities(Enemy.class)) {
             if (random.nextDouble() < TURN_CHANCE) {
                 enemy.setRotation(enemy.getRotation() + (random.nextDouble() - 0.5) * 90);
