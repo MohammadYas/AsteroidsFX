@@ -29,7 +29,7 @@ public class Game {
     private final Pane gameWindow = new Pane();
     private final Text status = new Text(10, 20, "");
 
-    private static final int SCORE_REFRESH_DELAY = 60;
+    private static final int SCORE_REFRESH_DELAY = 15;
     private static final long UPDATE_INTERVAL = 1_000_000_000L / 60;
 
     private final List<IGamePluginService> gamePluginServices;
