@@ -11,7 +11,7 @@ public class AsteroidPlugin implements IGamePluginService {
 
     private static final int ASTEROID_COUNT = 5;
 
-    private final Random random = new Random();
+    private static final Random random = new Random();
 
     @Override
     public void start(GameData gameData, World world) {
@@ -20,7 +20,7 @@ public class AsteroidPlugin implements IGamePluginService {
         }
     }
 
-    private Asteroid createAsteroid(GameData gameData) {
+    static Asteroid createAsteroid(GameData gameData) {
         Asteroid asteroid = new Asteroid();
         asteroid.setPolygonCoordinates(-14, -8, -6, -14, 6, -12, 14, -4, 12, 8, 2, 14, -8, 12, -14, 4);
         asteroid.setRadius(14);
